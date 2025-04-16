@@ -11,7 +11,7 @@ This repository demonstrates a minimal preemption-compatible Slurm job setup.
 
 To make your job preemption-compatible, make sure you do the following:
 
-- Add `--requeue` to your job script. This will automatically requeue your job on preemption (i.e., if a higher-priority job takes its place).
+- Add `#SBATCH --requeue` to your job script. This will automatically requeue your job on preemption (i.e., if a higher-priority job takes its place).
 - Add `trap 'scontrol requeue $SLURM_JOB_ID' SIGTERM` to your job script. This will automatically requeue your job on timeout.
 - Add `#SBATCH --signal=SIGTERM@30` to your job script. This will make Slurm send a signal to your Python script (to allow it to save a checkpoint before preemption/timeout). Then, in your Python script, listen for `SIGTERM` using `signal.signal` and save a checkpoint on `SIGTERM`. Also, make sure your Python script automatically detects and loads checkpoints.
 - Use `#SBATCH --open-mode=append` to prevent requeued jobs from overwriting previous logs.
